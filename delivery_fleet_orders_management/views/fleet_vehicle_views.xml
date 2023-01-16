@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="fleet_vehicle_view_form" model="ir.ui.view">
+        <field name="name">fleet.vehicle.form</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_form"/>
+        <field name="arch" type="xml">
+
+
+            <xpath expr="//field[@name='driver_id']" position="attributes">
+                <attribute name="domain">[('is_driver', '=', True), '|',('company_id', '=', False ), ('company_id',
+                    '=', company_id)]
+                </attribute>
+                <attribute name="options">{'no_create': True}</attribute>
+            </xpath>
+
+            <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
+                <button class="oe_stat_button"
+                        type="object" icon="fa-list"
+                        name="action_redirect_to_picking_orders">
+                    <field name="future_orders_count" widget="statinfo" string="Futures Orders"/>
+                </button>
+
+                <button class="oe_stat_button"
+                        type="object" icon="fa-list"
+                        name="action_redirect_to_picking_orders"
+                        context="{'all_orders': 1}">
+                    <field name="all_orders_count" widget="statinfo" string="All Orders"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+
+
+    <record id="fleet_vehicle_view_search" model="ir.ui.view">
+        <field name="name">fleet.vehicle.search</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_search"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='available']" position="before">
+                <filter string="Future Orders" name="orders_upcoming_all"
+                        domain="[ ('future_orders_count', '&gt;', 1)]"/>
+                <filter string="Today Orders" name="orders_today"
+                        domain="[ ('today_orders_count', '&gt;', 1)]"/>
+
+                <separator/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="fleet_vehicle_view_tree" model="ir.ui.view">
+        <field name="name">fleet.vehicle.tree</field>
+        <field name="model">fleet.vehicle</field>
+        <field name="inherit_id" ref="fleet.fleet_vehicle_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="inside">
+                <header>
+                    <button name="action_send_notification" type="object" string="Send Notifications"/>
+                </header>
+            </xpath>
+        </field>
+    </record>
+
+
+</odoo>

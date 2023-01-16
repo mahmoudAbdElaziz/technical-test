@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="fleet_orders_xlsx" model="ir.actions.report">
+        <field name="name">Fleet Orders [XLSX]</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">xlsx</field>
+        <field name="report_name">report_xlsx.fleet_orders_xlsx</field>
+        <field name="print_report_name">'Fleet Orders Report'</field>
+        <field name="binding_type">report</field>
+    </record>
+
+    <record id="fleet_orders_report" model="ir.actions.report">
+        <field name="name">Fleet Orders [PDF]</field>
+        <field name="model">stock.picking</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">delivery_fleet_orders_management.fleet_orders_template</field>
+        <field name="report_file">delivery_fleet_orders_management.fleet_orders_template</field>
+        <field name="print_report_name">'Fleet Orders Report'</field>
+        <field name="binding_type">report</field>
+    </record>
+
+    <template id="fleet_orders_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="text-center">
+                        <h2>
+                            Fleet Orders Report
+                        </h2>
+                    </div>
+                    <br/>
+                    <table class="table table-condensed table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-center">
+                                    <strong>Reference</strong>
+                                </th>
+                                <th class="text-center">
+                                    <strong>From</strong>
+                                </th>
+                                <th class="text-center">
+                                    <strong>To</strong>
+                                </th>
+                                <th class="text-center">
+                                    <strong>Contact</strong>
+                                </th>
+                                <th class="text-center">
+                                    <strong>Scheduled Date</strong>
+                                </th>
+                                <th class="text-center">
+                                    <strong>Status</strong>
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <t t-foreach="docs" t-as="o">
+                                <tr>
+                                    <td class="text-center">
+                                        <span t-esc="o.name"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="o.location_id.name"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="o.location_dest_id.name"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="o.partner_id.name"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="o.scheduled_date"/>
+                                    </td>
+                                    <td class="text-center">
+                                        <span t-esc="o.state"/>
+                                    </td>
+
+
+                                </tr>
+                            </t>
+                        </tbody>
+                    </table>
+
+
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>
